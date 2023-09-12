@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,9 +16,22 @@ class CheckStatus
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->status == 'A') {
-            return $next($request);
+        //dd($request);
+
+        $response = explode(':', $request->header('Authorization'));
+        $token = trim($response[0]);
+
+        //dd($token);
+        //$user = Auth::user();
+
+        //$request->validate(['token' => 'filled']);
+
+        if ($token) {
+            //if ($user->status) {
+                return $next($request);
+            //}
         }
+
         return response()->json('Su cuenta está inactiva');
     }
 }

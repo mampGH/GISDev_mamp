@@ -16,9 +16,12 @@ Route::controller(UserAuthController::class)->group(function() {
     Route::post('/login',  'login');
 });
 
-//Route::middleware('checkStatus')->get('/empleado', [EmpleadoController::class, 'index']);
+
+Route::get('/empleado', [EmpleadoController::class, 'index'])->middleware('auth:api','CheckStatus');
+//Route::get('/empleado')->middleware('auth:api','CheckStatus');
+
 
 Route::middleware('auth:api')->group(function() {
     Route::post('/logout',  [UserAuthController::class, 'logout']);
-    Route::resource('/empleado', EmpleadoController::class);
+    //Route::resource('/empleado', EmpleadoController::class, ['except' =>['index']]);
 });
